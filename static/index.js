@@ -188,7 +188,7 @@ if(collection){
 
 const addBooks =(arrItems)=>{
   //console.log('Add to collection')
-  const {img, textt}= arrItems
+  const {img, textt, link, authors, textt}= arrItems
  console.log(`The product clicked is ${img} `)
 
   //show the book collection wrapper
