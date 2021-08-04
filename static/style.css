@@ -121,7 +121,9 @@ ul li a{
 
 }
 
-
+.bookItem{
+    margin: 10px auto;
+}
 
 /* Home section */
 .img__wrapper{
