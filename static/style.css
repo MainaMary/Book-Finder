@@ -104,6 +104,22 @@ ul li a{
 
     }
 }
+.cart{
+    display: none;
+}
+.cart.show-cart{
+    display: block;
+}
+.cart a{
+    text-decoration: none;
+    display: block;
+    font-size: 1.2em;
+    color: #000;
+}
+.main-navbar.sticky .cart a{
+    color: #1e8fb4;
+
+}
 
 
 
@@ -199,7 +215,7 @@ input[type='text']{
     cursor: pointer;
 
 }
-.main-div{
+#main-div{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }

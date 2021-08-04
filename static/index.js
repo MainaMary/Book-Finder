@@ -26,7 +26,7 @@ const openNavbar = () => {
         link.style.animation = `animationLinks 1s ease forwards ${
           index / 7 + 1
         }s`;
-        console.log(index / 7);
+        // console.log(index / 7);
       }
     });
   });
@@ -35,114 +35,204 @@ openNavbar();
 
 const form = document.getElementById("form");
 
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const input = document.getElementById("user-input").value;
   console.log(input);
-
-  // if (input === "") {
-  //   const heading = document.getElementById("results");
-  //   heading.innerHTML = "Please try again ";
-  //   document.getElementById("main-div").innerHTML = "";
-  // } else {
-  //   const key = "AIzaSyCTrQa3w1nd0j5HMIWlaDZpq9M6cw1gN_0";
-
-  //   const url = `https://www.googleapis.com/books/v1/volumes?q=${input}&key=AIzaSyCTrQa3w1nd0j5HMIWlaDZpq9M6cw1gN_0`;
-  //   fetch(url)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   if (input.trim() === "") {
     const heading = document.getElementById("results");
     heading.innerHTML = "Please try again ";
     document.getElementById("main-div").innerHTML = "";
-  } else {
+  }else{
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${input}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        console.log(data.items);
-        const arr= data.items.map(item=>{
-          const categories = item.volumeInfo.categories;
-          // console.log(categories.toString());
-          // const randomSearch = Math.floor(Math.random() * Math.floor(6));
-          // console.log(randomSearch);
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log(data)
+      
+      // const arr= data.items.map(item=>{
+      //   const categories = item.volumeInfo.categories;
+      //   // console.log(categories.toString());
+      //   // const randomSearch = Math.floor(Math.random() * Math.floor(6));
+      //   // console.log(randomSearch);
 
-        })
-        displayData(data);
-        displayCategory(data)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      // })
+      displayData(data)
+      
+      
+    })
+    .catch((err) => {
+      // console.log(err);
+    });
+
   }
+   
   
-});
-const displayCategory = (data)=>{
-  data.items.map(elem=>{
-    console.log(elem.volumeInfo.categories);
+
   })
 
-}
-const displayData = (data) => {
-  const input = document.getElementById('user-input').value
+  // const displayCategory = (data)=>{
+  //   console.log('category');
+  // }
 
-  document.getElementById("results").innerHTML= `Search results for ${input}`
-  document.getElementById("main-div").innerHTML = data.items.map(
+  const displayData = (data) => {
+    const input = document.getElementById('user-input').value
+  
+   document.getElementById("results").innerHTML= `Search results for ${input}`
+  
+   
+  const newDiv= document.createElement('div')
+  
+  newDiv.innerHTML =data.items.map(
     (elem, index) =>
+    //   const strlength= elem.searchInfo.textSnippet.strlength;
+    //   if(!strlength > 10){
+    //  return elem.searchInfo.textSnippet
+    //   }else{
+    //     const newStr = elem.searchInfo.textSnippet
+    //   }
+  
+  
+      `
     
-     `
+      <div class ='book-wrapper'>
+        <img src="${elem.volumeInfo.imageLinks.smallThumbnail}"/>
+        <p>Title: ${elem.volumeInfo.title}</p>
+        <p>Author: ${elem.volumeInfo.authors}</p>
+     
+        <p> Info: ${elem.searchInfo.textSnippet}</p>
+       
+        <a href="${elem.volumeInfo.infoLink}" target="blank">  link: Read More</a>
+        <button class="btn-add">Add to collection</button>
     
-    <div class ='book-wrapper'>
-      <img src="${elem.volumeInfo.imageLinks.smallThumbnail}"/>
-      <p>Title: ${elem.volumeInfo.title}</p>
-      <p>Author: ${elem.volumeInfo.authors}</p>
-      <a href="${elem.volumeInfo.infoLink}" target="blank">Read More</a>
+    
+     </div>
+    `
+    
+   
+     
+  );
+  const btn = document.createElement('button')
+  const txt= document.createTextNode('Add to collection')
+  newDiv.appendChild(btn.appendChild(txt))
+  document.getElementById('main-div').appendChild(newDiv);
+  
+   const addToCart= document.querySelectorAll('.btn-add');
+   let adjusted = []
+
+
+   const arrItems= data.items.map((el, index)=>{
+  
+    const obj ={
+      img:  el.volumeInfo.imageLinks.smallThumbnail,
+      title:el.volumeInfo.title,
+       authors: el.volumeInfo.authors,
+       textt: el.searchInfo.textSnippet,
+       link: el.volumeInfo.infoLink
+    }
+adjusted.push(obj)
+   })
+  //  console.log(adjusted)
+
+   for(i =0; i< addToCart.length; i++){
+     
+    console.log(adjusted[i])
+      
+     addToCart[i].addEventListener('click', ()=>{
+      
+       addBooks(adjusted[i]);
+     })
+   }
+    document.getElementById('user-input').value=" "
+    document.getElementById("results").innerHTML = " "
+   
+  }
  
   
-   </div>
-`
-);
-  document.getElementById('user-input').value=" "
-  // const arr = data.items.map((elem, index) => {
-  //   document.getElementById("results").innerHTML = " "
-  //   console.log(elem.volumeInfo.title);
+ // const arr = data.items.map((elem, index) => {
+    // document.getElementById("results").innerHTML = " "
+    // console.log(elem.volumeInfo.title);
 
-  //   const authors = elem.volumeInfo.authors;
-  //   authors.map((author, index) => {
-  //     console.log(author);
-  //   });
+    // const authors = elem.volumeInfo.authors;
+    // authors.map((author, index) => {
+    //   console.log(author);
+    // });
 
-  //   const wrapper = document.createElement("div");
-  //   wrapper.classList.add("details");
-  //   const title = document.createTextNode(
-  //     `Book title: ${elem.volumeInfo.title}`
-  //   );
-  //   const titleContainer = document.createElement("div");
-  //   titleContainer.appendChild(title);
+    // const wrapper = document.createElement("div");
+    // wrapper.classList.add("details");
+    // const title = document.createTextNode(
+    //   `Book title: ${elem.volumeInfo.title}`
+    // );
+    // const titleContainer = document.createElement("div");
+    // titleContainer.appendChild(title);
+    // const image= document.createElement('img')
 
-  //   image.setAttribute("src", `${elem.volumeInfo.imageLinks.smallThumbnail}`);
+    //  const img= image.setAttribute("src", `${elem.volumeInfo.imageLinks.smallThumbnail}`);
 
-  //   //mainDiv
-  //   wrapper.appendChild(document.createElement("image"));
-  //   wrapper.appendChild(titleContainer);
-  // });
-};
+    //mainDiv
+//  const img= image.setAttribute("src", `${elem.volumeInfo.imageLinks.smallThumbnail}`);
+// wrapper.appendChild(img);
+    // wrapper.appendChild(titleContainer);
+    //document.getElementById('main-div').appendChild(wrapper)
+ // });
 
+
+const checkCollection =()=>{
+let collection= localStorage.getItem('collectionNumber')
+if(collection){
+  document.querySelector('.count').textContent = collection
+}
+
+}
+  
+
+const addBooks =(arrItems)=>{
+  //console.log('Add to collection')
+  const {img, textt}= arrItems
+ console.log(`The product clicked is ${img} `)
+
+  //show the book collection wrapper
+  const bookWrapper= document.querySelector('.cart');
+  bookWrapper.classList.add('show-cart')
+
+  
+
+  let collection= parseInt(localStorage.getItem('collectionNumber'))
+ // console.log(typeof collection)
+
+//check if there is any item in the localstorage
+  if(!collection){
+    localStorage.setItem('collectionNumber', 1)
+    let bookCount=document.querySelector('.count').textContent = collectionNumber
+  }else{
+    localStorage.setItem('collectionNumber', collection + 1)
+    document.querySelector('.count').textContent= collection + 1;
+    
+  }        
+}
+  
+
+ 
+  
+
+
+  
+    
+  
+
+ 
+
+
+checkCollection();
 const text = document.querySelector(".text");
-const btn = document.querySelector(".btn");
+const btnRead = document.querySelector(".btn");
 
-btn.addEventListener("click", (e) => {
-  text.classList.toggle("active");
-  if (btn.innerHTML == "Read More") {
-    btn.innerHTML = "Read Less";
+btnRead.addEventListener("click", (e) => {
+text.classList.toggle("active");
+  if (btnRead.innerHTML == "Read More") {
+    btnRead.innerHTML = "Read Less";
   } else {
-    btn.innerHTML = "Read More";
+    btnRead.innerHTML = "Read More";
   }
 });
+
