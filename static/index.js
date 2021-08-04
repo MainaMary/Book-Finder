@@ -181,6 +181,7 @@ const checkCollection =()=>{
 let collection= localStorage.getItem('collectionNumber')
 if(collection){
   document.querySelector('.count').textContent = collection
+  console.log('colection')
 }
 
 }
