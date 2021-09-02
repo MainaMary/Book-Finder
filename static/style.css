@@ -3,7 +3,9 @@
     margin: 0;
     padding: 0;
 }
-
+body{
+    position: relative;
+}
 .more-text{
     display: none;
 }
@@ -123,6 +125,7 @@ ul li a{
 
 .bookItem{
     margin: 10px auto;
+   
 }
 
 /* Home section */
@@ -181,6 +184,18 @@ text-transform: uppercase;
     text-decoration: none;
 
 }    
+
+.book-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    
+    padding: 10px 20px;
+    
+}
+.book-container > div{
+    margin: 20px auto;
+}
 /* .container__wrapper{
     margin-top: 50px;
     display: flex;
@@ -217,10 +232,7 @@ input[type='text']{
     cursor: pointer;
 
 }
-#main-div{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
+ 
 .book-wrapper{
     background-color: #1e8fb4;
     padding: 10px 5px;
@@ -228,13 +240,37 @@ input[type='text']{
 }
 /* About section */
 
+.modal__container{
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    display: none;
+    border-radius: 10px;
+    box-shadow: 0 0 3px #777;
+    background-color: #fff;
+    z-index: 2;
 
+}
+.modal__container.show{
+    display: block;
+}
+.modal__div{
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 0;
+}
+.modal__image{
+    width: 100px;
+    height: 100px;
+}
 @media only  screen and (max-width: 768px){
     .main-navbar{
         justify-content: space-around;
     }
    
-    .book-finder{
+    .book-finder{ 
         margin-left: 0;
     }
     .menu{

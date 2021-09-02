@@ -57,13 +57,15 @@ form.addEventListener("submit", (e) => {
 // const displayCategory = (data)=>{
 //   console.log('category');
 // }
-
+const modal= document.querySelector('.modal__container')
+const closeModal = document.querySelector('.close__modal')
 const displayData = (data) => {
   const input = document.getElementById("user-input").value;
 
   document.getElementById("results").innerHTML = `Search results for ${input}`;
 
   const newDiv = document.createElement("div");
+  newDiv.setAttribute('class','book-container')
 
   const bookCollection= []
 
@@ -95,69 +97,77 @@ const displayData = (data) => {
     content.appendChild(button);
     div.appendChild(content);
     
-
+   
     button.addEventListener("click", (e) => {
-      console.log(elem);
+      //console.log(elem);
       bookCollection.push(elem)
-      localStorage.setItem('bk', JSON.stringify(bookCollection))
+     const indexItem= bookCollection.map((item, index)=>{
+        //console.log(item)
+      
+       return item
+      
+     })
+     
+     modal.classList.add('show')
+     let bookObj= JSON.parse(localStorage.getItem('bk'))
+     
+     //console.log(bookObj)
+     
+    
+     localStorage.setItem('bk', JSON.stringify(indexItem));
+     
+     showModal(bookObj)
+     
     });
 
-    newDiv.appendChild(div);console.log(bookCollection);
+
+    newDiv.appendChild(div);
+    //console.log(bookCollection);
   });
   
-  const btn = document.createElement("button");
-  const txt = document.createTextNode("Add to collection");
-  newDiv.appendChild(btn.appendChild(txt));
+ 
   document.getElementById("main-div").appendChild(newDiv);
 
-  const addToCart = document.querySelectorAll(".btn-add");
-
+  
   
 
 
 
 
-  let adjusted = [];
-
-  const arrItems = data.items.map((el, index) => {
-    const obj = {
-      img: el.volumeInfo.imageLinks.smallThumbnail,
-      title: el.volumeInfo.title,
-      authors: el.volumeInfo.authors,
-      textt: el.searchInfo.textSnippet,
-      link: el.volumeInfo.infoLink,
-    };
-    adjusted.push(obj);
-  });
-  //  console.log(adjusted)
-
-  for (i = 0; i < addToCart.length; i++) {
-    addToCart[i].addEventListener("click", () => {
-      console.log(adjusted[i]);
-      //addBooks(adjusted[i]);
-    });
-  }
   document.getElementById("user-input").value = " ";
   document.getElementById("results").innerHTML = " ";
+  
 };
 
-// const arr = data.items.map((elem, index) => {
-// document.getElementById("results").innerHTML = " "
-// console.log(elem.volumeInfo.title);
+const showModal = (bookObj)=>{
+  
+  
+  closeModal.addEventListener('click', ()=>{
+    modal.classList.remove('show')
+  })
+  bookObj.map((item, index)=>{
+    const items =`
+    <img class='modal__image'src="${item.volumeInfo.imageLinks.smallThumbnail}"/>
+    <p class='modal__title'>"${item.volumeInfo.title}"</p>
+    <p class='modal__authors'>"${item.volumeInfo.authors}"</p>
+    `;
 
-// const authors = elem.volumeInfo.authors;
-// authors.map((author, index) => {
-//   console.log(author);
-// });
+    const modalDiv= document.createElement('div')
+    const modalCont = document.createElement('div')
+    modalCont.setAttribute('class',"modal__div")
+    const btn = document.createElement("button");
+    btn.setAttribute("class", "btn__delete");
 
-// const wrapper = document.createElement("div");
-// wrapper.classList.add("details");
-// const title = document.createTextNode(
-//   `Book title: ${elem.volumeInfo.title}`
-// );
-// const titleContainer = document.createElement("div");
-// titleContainer.appendChild(title);
-// const image= document.createElement('img')
+    btn.innerText = "Delete";
+    modalCont.innerHTML = items
+    
+    modalCont.appendChild(btn);
+    modalDiv.appendChild(modalCont)
+    document.querySelector('.modal__wrapper').appendChild(modalDiv)
+ })
+
+}
+
 
 //  const img= image.setAttribute("src", `${elem.volumeInfo.imageLinks.smallThumbnail}`);
 
